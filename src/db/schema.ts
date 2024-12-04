@@ -1,4 +1,10 @@
-import { pgTable, varchar, uuid, foreignKey } from "drizzle-orm/pg-core";
+import {
+  pgTable,
+  varchar,
+  uuid,
+  foreignKey,
+  timestamp,
+} from "drizzle-orm/pg-core";
 
 export const alliancesTable = pgTable("alliances", {
   id: uuid().primaryKey().defaultRandom(),
@@ -55,38 +61,42 @@ export const flightsTable = pgTable(
     airlineId: uuid("airlines_airline_id"),
     fromDestination: uuid("destinations_destination_id_from"),
     toDestination: uuid("destinations_destination_id_to"),
+  }
+);
+
+export const searchTable = pgTable(
+  "searches",
+  {
+    id: uuid().primaryKey().defaultRandom(),
+    createdTimestamp: timestamp({ mode: "date" }).defaultNow(),
+    fromDestinationId: uuid("destinations_destination_id_from").notNull(),
+    toDestinationId: uuid("destinations_destination_id_to").notNull(),
   },
   (table) => {
     return {
-      airlineReference: foreignKey({
-        columns: [table.airlineId],
-        foreignColumns: [table.airlineId],
-        name: "airline_fk",
-      }),
       fromDestinationReference: foreignKey({
-        columns: [table.fromDestination],
+        columns: [table.fromDestinationId],
         foreignColumns: [destinationsTable.id],
       }),
       toDestinationReference: foreignKey({
-        columns: [table.toDestination],
+        columns: [table.toDestinationId],
         foreignColumns: [destinationsTable.id],
       }),
     };
   }
 );
 
+export type SelectFlight = typeof flightsTable.$inferSelect;
+export type InsertFlight = typeof flightsTable.$inferInsert;
 
-export type SelectFlight = typeof flightsTable.$inferSelect
-export type InsertFlight = typeof flightsTable.$inferInsert
+export type SelectAirport = typeof airportsTable.$inferSelect;
+export type InsertAirport = typeof airportsTable.$inferInsert;
 
-export type SelectAirport = typeof airportsTable.$inferSelect
-export type InsertAirport = typeof airportsTable.$inferInsert
+export type SelectDestination = typeof destinationsTable.$inferSelect;
+export type InsertDestination = typeof destinationsTable.$inferInsert;
 
-export type SelectDestination = typeof destinationsTable.$inferSelect
-export type InsertDestination = typeof destinationsTable.$inferInsert
+export type SelectAirline = typeof airlinesTable.$inferSelect;
+export type InsertAirline = typeof airlinesTable.$inferInsert;
 
-export type SelectAirline = typeof airlinesTable.$inferSelect
-export type InsertAirline = typeof airlinesTable.$inferInsert
-
-export type SelectAlliance = typeof alliancesTable.$inferSelect
-export type InsertAlliance = typeof alliancesTable.$inferInsert
+export type SelectAlliance = typeof alliancesTable.$inferSelect;
+export type InsertAlliance = typeof alliancesTable.$inferInsert;
