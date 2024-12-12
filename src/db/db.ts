@@ -3,6 +3,8 @@ import Bun from "bun";
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Client } from "pg";
 
+import * as schema from "@/db/schema";
+
 // on-prem db
 /* const client = new Client({
     host: Bun.env.DB_HOST,
@@ -21,4 +23,4 @@ client
     console.log("could not connect to db");
   });
 
-export default drizzle(client);
+export default drizzle({ client: client, schema: { ...schema } });
