@@ -94,7 +94,7 @@ export const searchesRelations = relations(searches, ({ many }) => ({
 
 export const trips = pgTable("trips", {
   id: uuid().primaryKey().defaultRandom(),
-  ticketId: uuid().defaultRandom(),
+  ticketId: uuid().defaultRandom().notNull(),
   order: integer().notNull(),
   flightId: varchar().notNull(),
   searchId: varchar().notNull(),
