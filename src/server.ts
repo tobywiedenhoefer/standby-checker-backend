@@ -1,12 +1,13 @@
-import express from "express"
+import express from "express";
 
 import publicRoutes from "@/constants/publicRoutes";
 
 import isBearerTokenValid from "@/services/auth/isBearerTokenValid";
 
 import { destinationRoutes } from "@/routes/destinationRoutes";
+import { ticketRoutes } from "@/routes/ticketRoutes";
 
-const app = express()
+const app = express();
 
 app.use(express.json());
 
@@ -26,4 +27,5 @@ app.use(async (req, res, next) => {
   next();
 });
 
-app.use("/api/destinations", destinationRoutes)
+app.use("/api/destinations", destinationRoutes);
+app.use("/api/tickets", ticketRoutes);
