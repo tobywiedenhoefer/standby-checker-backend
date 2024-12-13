@@ -3,11 +3,9 @@ import Destination from "@/types/response/Destination";
 
 type Flight = {
   id: string;
-  airline: Airline;
-  destination: {
-    from: Destination;
-    to: Destination;
-  };
+  airlineId: string;
+  from: Destination;
+  to: Destination;
 };
 
-export default Flight
+export default Flight;
