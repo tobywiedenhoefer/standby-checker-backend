@@ -1,8 +1,9 @@
 import db from "@/db/db";
 import SearchFilters from "@/types/db/SearchFilter";
+import Ticket from "@/types/response/Ticket";
 import * as SearchService from "@/services/db/searches";
 
-export const get = async (filters: SearchFilters) => {
+export const get = async (filters: SearchFilters): Promise<Ticket[]> => {
   const cachedId = await SearchService.get(filters);
   if (cachedId) {
     const prepared = await db.query.trips
