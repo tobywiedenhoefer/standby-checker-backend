@@ -12,6 +12,10 @@ export const alliances = pgTable("alliances", {
   name: varchar({ length: 100 }).notNull(),
 });
 
+export const allianceRelations = relations(alliances, ({ many }) => ({
+  airlines: many(airlines),
+}));
+
 export const airlines = pgTable("airlines", {
   id: uuid().primaryKey().defaultRandom(),
   name: varchar({ length: 200 }).notNull(),
