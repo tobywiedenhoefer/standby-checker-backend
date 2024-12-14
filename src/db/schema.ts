@@ -76,6 +76,10 @@ export const flightsRelations = relations(flights, ({ one }) => ({
     fields: [flights.toDestinationId],
     references: [destinations.id],
   }),
+  airline: one(airlines, {
+    fields: [flights.airlineId],
+    references: [airlines.id],
+  }),
 }));
 
 /**
