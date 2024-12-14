@@ -65,7 +65,7 @@ export const get = async (
     fromAirportSearchUUID: UUIDService.get(filters.fromAirportId ?? ""),
     toAirportSearchUUID: UUIDService.get(filters.toAirportId ?? ""),
     airlinesSearchUUID: UUIDService.get(filters.airlineIds ?? ""),
-    allianceSearchUUID: UUIDService.get(filters.allianceIds ?? ""),
+    allianceSearchUUID: UUIDService.get(filters.allianceId ?? ""),
   };
   const searchRow = await prepared.execute({ ...queryParams });
   return searchRow?.id;

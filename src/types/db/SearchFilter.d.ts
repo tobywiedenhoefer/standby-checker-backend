@@ -5,7 +5,7 @@ type SearchFilters = {
   fromAirportId?: string;
   toAirportId?: string;
   airlineIds?: Uint8Array;
-  allianceIds?: Uint8Array;
+  allianceId?: string;
 };
 
 export default SearchFilters;
