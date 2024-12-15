@@ -1,5 +1,4 @@
 import { getCachedTrips } from "@/db/queries";
-import { SelectFlight } from "@/db/schema";
 
 import SearchFilters from "@/types/db/SearchFilter";
 import Ticket from "@/types/response/Ticket";
@@ -7,6 +6,7 @@ import Flight from "@/types/response/Flight";
 
 import * as SearchService from "@/services/db/searches";
 import * as FlightService from "@/services/db/flights";
+import * as UUIDService from "@/services/transformation/uuid";
 
 const isArrivingFlight = (filters: SearchFilters, flight: Flight): boolean => {
   return (
@@ -75,14 +75,19 @@ export const get = async (filters: SearchFilters): Promise<Ticket[]> => {
     }
   });
   const tickets: Ticket[] = [];
+  const searchId = UUIDService.get();
   results.forEach((path) => {
+    const ticketId = UUIDService.get(
+      Uint8Array.from(path.map((flight) => flight.id.charCodeAt(0)))
+    );
+    const id = UUIDService.get();
     path.forEach((flight, ind) => {
       tickets.push({
-        id: "",
-        ticketId: "",
+        id: id,
+        ticketId: ticketId,
         order: ind,
         flightId: flight.id,
-        searchId: "",
+        searchId: searchId,
         flight: flight,
       });
     });
