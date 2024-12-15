@@ -63,6 +63,8 @@ export const airportsRelations = relations(airports, ({ one }) => ({
 export const flights = pgTable("flights", {
   id: uuid().primaryKey().defaultRandom(),
   airlineId: varchar().notNull(),
+  fromAirportId: varchar().notNull(),
+  toAirportId: varchar().notNull(),
   fromDestinationId: varchar().notNull(),
   toDestinationId: varchar().notNull(),
 });
@@ -79,6 +81,14 @@ export const flightsRelations = relations(flights, ({ one }) => ({
   airline: one(airlines, {
     fields: [flights.airlineId],
     references: [airlines.id],
+  }),
+  fromAirport: one(airports, {
+    fields: [flights.fromAirportId],
+    references: [airports.id],
+  }),
+  toAirport: one(airports, {
+    fields: [flights.toAirportId],
+    references: [airports.id],
   }),
 }));
 
