@@ -48,3 +48,17 @@ export const getCachedTrips = async (cachedId: string) =>
       },
     })
     .prepare("cached_trips_query");
+
+export const getUnexpiredTokensByUserId = async () =>
+  await db.query.tokens
+    .findMany({
+      where: (tokens, { eq, lte, and, sql }) =>
+        and(
+          eq(tokens.user_id, sql.placeholder("userId")),
+          lte(tokens.created_at, sql.placeholder("expiry"))
+        ),
+      columns: {
+        id: true,
+      },
+    })
+    .prepare("get_unexpired_tokens_by_user_id_query");
