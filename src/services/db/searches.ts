@@ -1,13 +1,7 @@
 import db from "@/db/db";
 import SearchFilters from "@/types/db/SearchFilter";
-import * as UUIDService from "@/services/transformation/uuid";
-
-const getExpiryDate = () => {
-  const now = new Date();
-  const expiryDate = new Date();
-  expiryDate.setDate(now.getDate() + 3);
-  return expiryDate;
-};
+import * as UUIDService from "@/services/utilities/uuid";
+import * as DateService from "@/services/utilities/dates";
 
 export const get = async (
   filters: SearchFilters
@@ -59,7 +53,7 @@ export const get = async (
     .prepare("search_for_search_id");
   const queryParams = {
     cachedSearchId: filters.cachedSearchId ?? "",
-    createdTimestamp: getExpiryDate(),
+    createdTimestamp: DateService.get({ expiry: true }),
     fromDestinationSearchUUID: UUIDService.get(filters.fromDestinationId),
     toDestinationSearchUUID: UUIDService.get(filters.toDestinationId),
     fromAirportSearchUUID: UUIDService.get(filters.fromAirportId ?? ""),

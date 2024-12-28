@@ -6,7 +6,7 @@ import Flight from "@/types/response/Flight";
 
 import * as SearchService from "@/services/db/searches";
 import * as FlightService from "@/services/db/flights";
-import * as UUIDService from "@/services/transformation/uuid";
+import * as UUIDService from "@/services/utilities/uuid";
 
 const isArrivingFlight = (filters: SearchFilters, flight: Flight): boolean => {
   return (
