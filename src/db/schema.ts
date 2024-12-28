@@ -7,6 +7,43 @@ import {
   integer,
 } from "drizzle-orm/pg-core";
 
+/**
+ * User and auth info
+ */
+
+export const users = pgTable("users", {
+  id: uuid().primaryKey().defaultRandom(),
+  username: varchar().notNull().unique(),
+  password_hash: varchar().notNull(),
+  created_at: timestamp({ mode: "date" }).defaultNow(),
+});
+
+export const usersRelations = relations(users, ({ many }) => ({
+  tokens: many(tokens),
+}));
+
+export const tokens = pgTable("tokens", {
+  id: uuid().primaryKey().defaultRandom(),
+  token: uuid("token").notNull().unique().defaultRandom(),
+  created_at: timestamp().notNull().defaultNow(),
+  user_id: uuid()
+    .notNull()
+    .references(() => users.id, {
+      onDelete: "cascade",
+    }),
+});
+
+export const tokensRelations = relations(tokens, ({ one }) => ({
+  users: one(users, {
+    fields: [tokens.user_id],
+    references: [users.id],
+  }),
+}));
+
+/**
+ * Standby Checker Flight Datas
+ */
+
 export const alliances = pgTable("alliances", {
   id: uuid().primaryKey().defaultRandom(),
   name: varchar({ length: 100 }).notNull(),
@@ -125,6 +162,12 @@ export const tripsRelations = relations(trips, ({ one }) => ({
     references: [searches.id],
   }),
 }));
+
+export type SelectUser = typeof users.$inferSelect;
+export type InsertUser = typeof users.$inferInsert;
+
+export type SelectToken = typeof tokens.$inferSelect;
+export type InsertToken = typeof tokens.$inferInsert;
 
 export type SelectFlight = typeof flights.$inferSelect;
 export type InsertFlight = typeof flights.$inferInsert;
